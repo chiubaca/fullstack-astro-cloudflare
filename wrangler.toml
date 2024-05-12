@@ -1,2 +1,3 @@
+name = "fullstack-astro-cloudflare"
 compatibility_flags = ["nodejs_als"]
-pages_build_output_dir = "dist"
+pages_build_output_dir = "/dist"
