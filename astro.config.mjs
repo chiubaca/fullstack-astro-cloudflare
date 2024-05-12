@@ -7,8 +7,13 @@ import cloudflare from "@astrojs/cloudflare";
 export default defineConfig({
   output: "server",
   experimental: {
-    actions: true
+    actions: true,
   },
   integrations: [react()],
-  adapter: cloudflare()
+  adapter: cloudflare(),
+  vite: {
+    ssr: {
+      external: ["node:async_hooks"],
+    },
+  },
 });
