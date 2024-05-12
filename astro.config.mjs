@@ -11,9 +11,4 @@ export default defineConfig({
   },
   integrations: [react()],
   adapter: cloudflare(),
-  vite: {
-    ssr: {
-      external: ["node:async_hooks"],
-    },
-  },
 });
