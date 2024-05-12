@@ -1,16 +1,1 @@
-name = "fullstack-astro-cloudflare"
-compatibility_date = "2024-04-19"
 compatibility_flags = ["nodejs_asl"]
-
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "d1-demo-prod-db"
-# database_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-# preview_database_id = "DB"
-
-# [env.preview]
-# name = "preview"
-# [[env.preview.d1_databases]]
-# binding = "DB"
-# database_name = "d1-demo-preview-db"
-# database_id = "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
