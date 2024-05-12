@@ -10,5 +10,15 @@ export default defineConfig({
     actions: true,
   },
   integrations: [react()],
-  adapter: cloudflare(),
+  vite: {
+    ssr: {
+      external: ["node:async_hooks"],
+    },
+  },
+  adapter: cloudflare({
+    platformProxy: {
+      enabled: true,
+      configPath: "wrangler.toml",
+    },
+  }),
 });
