@@ -5,11 +5,8 @@ import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
-  output: "server",
-  experimental: {
-    actions: true,
-  },
   integrations: [react()],
+  output: "hybrid",
   vite: {
     ssr: {
       external: ["node:async_hooks"],
@@ -21,4 +18,7 @@ export default defineConfig({
       configPath: "wrangler.toml",
     },
   }),
+  experimental: {
+    actions: true,
+  },
 });
