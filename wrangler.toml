@@ -1,6 +1,6 @@
 name = "fullstack-astro-cloudflare"
 compatibility_date = "2024-04-19"
-compatibility_flags = ["nodejs_compat"]
+compatibility_flags = ["nodejs_asl"]
 
 # [[d1_databases]]
 # binding = "DB"
