@@ -1,8 +1,15 @@
 import { actions, getActionProps } from "astro:actions";
 import { useState } from "react";
 
-export const Todo = () => {
-  const [todos, setTodos] = useState<string[]>([]);
+type Props = {
+  todos: {
+    id: string | number;
+    text: string;
+  }[];
+};
+
+export const Todo: React.FC<Props> = ({todos:initialTodos}) => {
+  const [todos, setTodos] = useState<Props['todos']>(initialTodos);
 
   return (
     <>
@@ -12,9 +19,9 @@ export const Todo = () => {
           e.preventDefault();
           const formData = new FormData(e.target as HTMLFormElement);
 
-          const todo = await actions.createTodo(formData);
+          const resp = await actions.createTodo(formData);
 
-          setTodos([...todos, todo]);
+          setTodos([...todos, resp]);
         }}
       >
         <input {...getActionProps(actions.createTodo)} />
@@ -23,10 +30,8 @@ export const Todo = () => {
       </form>
 
       {todos.map((todo, idx) => (
-        <div key={idx}>{todo}</div>
+        <div key={idx}>{todo.text}</div>
       ))}
-
-      <div>test..</div>
     </>
   );
 };

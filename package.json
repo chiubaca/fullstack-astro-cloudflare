@@ -7,7 +7,9 @@
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "d1:deploy:local":"npx wrangler d1 execute fullstack-astro-cloudflare-db --local --file=./drizzle/0000_petite_bedlam.sql",
+    "drizzle:generate": "drizzle-kit generate"
   },
   "dependencies": {
     "@astrojs/check": "^0.6.0",
@@ -15,9 +17,16 @@
     "@astrojs/react": "^3.3.4",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.0",
-    "astro": "^4.8.2",
+    "astro": "^4.8.3",
+    "drizzle-orm": "^0.30.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.11",
+    "better-sqlite3": "^10.0.0",
+    "cross-env": "^7.0.3",
+    "drizzle-kit": "^0.21.1"
   }
 }

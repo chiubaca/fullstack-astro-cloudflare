@@ -1,7 +1,13 @@
 ---
+import { drizzle } from "drizzle-orm/d1";
+
+import { todo } from "../../db/schema";
 import { Todo } from "../components/todo";
 
-console.log("page refreshed");
+const APP_DB = Astro.locals.runtime.env.APP_DB;
+const db = drizzle(APP_DB);
+
+const todos = await db.select().from(todo);
 ---
 
 <html lang="en">
@@ -13,6 +19,6 @@ console.log("page refreshed");
     <title>Astro</title>
   </head>
   <body>
-    <Todo client:load />
+    <Todo client:load todos={todos} />
   </body>
 </html>

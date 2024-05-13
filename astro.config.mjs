@@ -6,7 +6,7 @@ import cloudflare from "@astrojs/cloudflare";
 // https://astro.build/config
 export default defineConfig({
   integrations: [react()],
-  output: "hybrid",
+  output: "server",
   vite: {
     ssr: {
       external: ["node:async_hooks"],
@@ -16,7 +16,7 @@ export default defineConfig({
     platformProxy: {
       enabled: true,
       configPath: "wrangler.toml",
-    },
+    }
   }),
   experimental: {
     actions: true,

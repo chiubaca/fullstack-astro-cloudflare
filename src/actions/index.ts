@@ -1,17 +1,22 @@
-import { defineAction, z } from "astro:actions";
+import { drizzle } from "drizzle-orm/d1";
+import { defineAction, getApiContext, z } from "astro:actions";
+
+import { todo } from "../../db/schema";
 
 export const server = {
   createTodo: defineAction({
     accept: "form",
     input: z.object({
-      text: z.string()
-
+      text: z.string(),
     }),
     handler: async ({ text }) => {
-      console.log("🚀 ~ handler: ~ text:", text)
+      const { locals } = getApiContext();
+      const APP_DB = locals.runtime.env.APP_DB;
 
-      // call a mailing service, or store to a database
-      return text;
+      const db = drizzle(APP_DB);
+      const resp = await db.insert(todo).values({ text: text }).returning();
+
+      return resp[0];
     },
   }),
 };
