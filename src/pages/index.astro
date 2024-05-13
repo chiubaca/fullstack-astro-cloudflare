@@ -4,6 +4,7 @@ import { drizzle } from "drizzle-orm/d1";
 import { todo } from "../../db/schema";
 import { Todo } from "../components/todo";
 
+// @ts-ignore
 const APP_DB = Astro.locals.runtime.env.APP_DB;
 const db = drizzle(APP_DB);
 
