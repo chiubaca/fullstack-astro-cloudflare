@@ -6,10 +6,19 @@ import { Todo } from "../components/todo";
 
 // @ts-ignore
 const APP_DB = Astro.locals.runtime.env.APP_DB;
-console.log("🚀 ~ APP_DB:", JSON.stringify(APP_DB))
-const db = drizzle(APP_DB);
+console.log("🚀 ~ APP_DB:", JSON.stringify(Astro.locals));
 
-const todos = await db.select().from(todo);
+let todos: {
+  id: number;
+  text: string;
+}[] = [];
+
+try {
+  const db = drizzle(APP_DB);
+  todos = await db.select().from(todo);
+} catch (err) {
+  console.log("🚀 ~ err:", JSON.stringify(err));
+}
 ---
 
 <html lang="en">

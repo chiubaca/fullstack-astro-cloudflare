@@ -4,4 +4,5 @@ export default defineConfig({
   dialect: 'sqlite',
   verbose: true,
   strict: true,
+  driver: 'd1'
 })
