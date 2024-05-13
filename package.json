@@ -9,6 +9,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "d1:deploy:local":"npx wrangler d1 execute fullstack-astro-cloudflare-db --local --file=./drizzle/0000_petite_bedlam.sql",
+    "d1:deploy:remote":"npx wrangler d1 execute fullstack-astro-cloudflare-db --remote --file=./drizzle/0000_petite_bedlam.sql",
     "drizzle:generate": "drizzle-kit generate"
   },
   "dependencies": {

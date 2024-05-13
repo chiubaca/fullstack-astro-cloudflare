@@ -11,7 +11,8 @@ export const server = {
     }),
     handler: async ({ text }) => {
       const { locals } = getApiContext();
-      // @ts-ignore
+
+      // @ts-ignore FIX ME!
       const APP_DB = locals.runtime.env.APP_DB;
 
       const db = drizzle(APP_DB);
@@ -21,3 +22,5 @@ export const server = {
     },
   }),
 };
+
+

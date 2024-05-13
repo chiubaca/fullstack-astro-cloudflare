@@ -4,9 +4,8 @@ import { drizzle } from "drizzle-orm/d1";
 import { todo } from "../../db/schema";
 import { Todo } from "../components/todo";
 
-// @ts-ignore
+// @ts-ignore FIX ME!
 const APP_DB = Astro.locals.runtime.env.APP_DB;
-console.log("🚀 ~ APP_DB:", JSON.stringify(Astro.locals));
 
 let todos: {
   id: number;
@@ -17,7 +16,7 @@ try {
   const db = drizzle(APP_DB);
   todos = await db.select().from(todo);
 } catch (err) {
-  console.log("🚀 ~ err:", JSON.stringify(err));
+  console.log("Uncaught error!", err);
 }
 ---
 
