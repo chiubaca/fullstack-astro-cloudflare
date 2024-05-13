@@ -3,13 +3,13 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro check && astro build",
-    "preview": "astro preview",
+    "dev": "wrangler types && astro dev",
+    "start": "wrangler types && astro dev",
+    "build": "wrangler types && astro check && astro build",
+    "preview": "wrangler types && astro preview",
     "astro": "astro",
-    "d1:deploy:local":"npx wrangler d1 execute fullstack-astro-cloudflare-db --local --file=./drizzle/0000_petite_bedlam.sql",
-    "d1:deploy:remote":"npx wrangler d1 execute fullstack-astro-cloudflare-db --remote --file=./drizzle/0000_petite_bedlam.sql",
+    "d1:deploy:local": "wrangler d1 execute fullstack-astro-cloudflare-db --local --file=./drizzle/0000_petite_bedlam.sql",
+    "d1:deploy:remote": "wrangler d1 execute fullstack-astro-cloudflare-db --remote --file=./drizzle/0000_petite_bedlam.sql",
     "drizzle:generate": "drizzle-kit generate"
   },
   "dependencies": {
@@ -22,7 +22,8 @@
     "drizzle-orm": "^0.30.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "wrangler": "^3.55.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.11",
