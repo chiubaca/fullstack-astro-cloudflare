@@ -30,6 +30,7 @@ export async function GET(context: APIContext): Promise<Response> {
       },
     });
     const githubUser: GitHubUser = await githubUserResponse.json();
+    console.log("🚀 ~ GET ~ githubUser:", githubUser)
 
     // Replace this with your own DB client.
     const existingUser = await db.query.userTable.findFirst({
