@@ -3,6 +3,7 @@ import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
 import { drizzle } from "drizzle-orm/d1";
 import { sessionTable, userTable } from "../../db/schema";
 import { GitHub } from "arctic";
+console.log("🚀 ~ import.meta.env.GITHUB_CLIENT_ID:", import.meta.env.GITHUB_CLIENT_ID, import.meta.env.GITHUB_CLIENT_SECRET)
 
 export const github = new GitHub(
 	import.meta.env.GITHUB_CLIENT_ID,
