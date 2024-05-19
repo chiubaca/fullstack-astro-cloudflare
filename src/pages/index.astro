@@ -6,6 +6,8 @@ import { Todo } from "../components/todo";
 
 const APP_DB = Astro.locals.runtime.env.APP_DB;
 
+const { user } = Astro.locals;
+
 let todos: {
   id: number;
   text: string;
@@ -27,7 +29,27 @@ try {
     <meta name="generator" content={Astro.generator} />
     <title>Astro</title>
   </head>
+
+  <div>
+    {
+      !user ? (
+        <a href="login/github"> Sign in with GitHub</a>
+      ) : (
+        <div> Hello {user?.username}</div>
+      )
+    }
+  </div>
   <body>
     <Todo client:load todos={todos} />
   </body>
+
+  {
+    user && (
+      <form method="post" action="/logout">
+        <button>Sign out</button>
+      </form>
+    )
+  }
+
+
 </html>
