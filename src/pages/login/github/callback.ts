@@ -4,15 +4,15 @@ import { OAuth2RequestError } from "arctic";
 import { drizzle } from "drizzle-orm/d1";
 import { eq } from "drizzle-orm";
 
-import { github, initialiseLucia } from "../../../lib/lucia";
+import { initialiseGithubClient, initialiseLucia } from "../../../lib/lucia";
 import * as schema from "../../../../db/schema";
 
 import type { APIContext } from "astro";
 
 export async function GET(context: APIContext): Promise<Response> {
+  const github = initialiseGithubClient(context.locals.runtime.env);
   const lucia = initialiseLucia(context.locals.runtime.env.APP_DB);
   const db = drizzle(context.locals.runtime.env.APP_DB, { schema });
-
   const code = context.url.searchParams.get("code");
   const state = context.url.searchParams.get("state");
   const storedState = context.cookies.get("github_oauth_state")?.value ?? null;
@@ -27,12 +27,11 @@ export async function GET(context: APIContext): Promise<Response> {
     const githubUserResponse = await fetch("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${tokens.accessToken}`,
+        "User-Agent": "astro-cloudflare-pages",
       },
     });
     const githubUser: GitHubUser = await githubUserResponse.json();
-    console.log("🚀 ~ GET ~ githubUser:", githubUser)
 
-    // Replace this with your own DB client.
     const existingUser = await db.query.userTable.findFirst({
       where: eq(schema.userTable.githubId, parseInt(githubUser.id)),
     });
@@ -48,9 +47,8 @@ export async function GET(context: APIContext): Promise<Response> {
       return context.redirect("/");
     }
 
-    const userId = generateIdFromEntropySize(10); // 16 characters long
+    const userId = generateIdFromEntropySize(10);
 
-    // Replace this with your own DB client.
     await db.insert(schema.userTable).values({
       id: userId,
       githubId: parseInt(githubUser.id),

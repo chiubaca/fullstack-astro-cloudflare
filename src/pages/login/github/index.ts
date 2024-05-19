@@ -1,9 +1,10 @@
-import { generateState } from "arctic";
-import { github } from "../../../lib/lucia";
+ import { generateState } from "arctic";
+import { initialiseGithubClient } from "../../../lib/lucia";
 
 import type { APIContext } from "astro";
 
 export async function GET(context: APIContext): Promise<Response> {
+  const github = initialiseGithubClient(context.locals.runtime.env);
   const state = generateState();
   const url = await github.createAuthorizationURL(state);
 

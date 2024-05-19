@@ -2,5 +2,7 @@
 // by running `wrangler types`
 
 interface Env {
-	APP_DB: D1Database;
+  APP_DB: D1Database;
+  GITHUB_CLIENT_ID: string;
+  GITHUB_CLIENT_SECRET: GITHUB_CLIENT_SECRET;
 }
