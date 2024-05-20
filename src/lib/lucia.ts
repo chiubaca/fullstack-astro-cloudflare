@@ -12,6 +12,7 @@ export function initialiseGithubClient(env: Env) {
       import.meta.env.LOCAL_GITHUB_CLIENT_SECRET
     );
   }
+  console.log("lucia in prod", import.meta.env);
 
   return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
 }
