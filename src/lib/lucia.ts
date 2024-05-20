@@ -5,15 +5,6 @@ import { sessionTable, userTable } from "../../db/schema";
 import { GitHub } from "arctic";
 
 export function initialiseGithubClient(env: Env) {
-  if (import.meta.env.DEV) {
-    console.log("⚠️ initialising github client for local development");
-    return new GitHub(
-      import.meta.env.LOCAL_GITHUB_CLIENT_ID,
-      import.meta.env.LOCAL_GITHUB_CLIENT_SECRET
-    );
-  }
-  console.log("lucia in prod", import.meta.env);
-
   return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
 }
 
