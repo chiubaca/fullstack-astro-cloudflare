@@ -2,10 +2,18 @@ import { Lucia } from "lucia";
 import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
 import { drizzle } from "drizzle-orm/d1";
 import { sessionTable, userTable } from "../../db/schema";
-import { GitHub } from "arctic";
+import { GitHub, Google } from "arctic";
 
 export function initialiseGithubClient(env: Env) {
   return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET);
+}
+
+export function initialiseGoogleClient(env: Env) {
+  return new Google(
+    env.GOOGLE_CLIENT_ID,
+    env.GOOGLE_CLIENT_SECRET,
+    env.GOOGLE_CLIENT_REDIRECT_URL
+  );
 }
 
 export function initialiseLucia(D1: D1Database) {

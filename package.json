@@ -8,8 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "d1:deploy:local": "wrangler d1 execute fullstack-astro-cloudflare-db --local --file=./drizzle/0001_keen_valeria_richards.sql",
-    "d1:deploy:remote": "wrangler d1 execute fullstack-astro-cloudflare-db --remote --file=./drizzle/0001_keen_valeria_richards.sql",
+    "d1:migrate:local": "wrangler d1 migrations apply fullstack-astro-cloudflare-db --local",
+    "d1:migrate:remote": "wrangler d1 migrations apply fullstack-astro-cloudflare-db --remote",
     "drizzle:generate": "drizzle-kit generate",
     "wrangler:types": "wrangler types",
     "wrangler:deploy": "astro build && wrangler pages deploy"

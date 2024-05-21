@@ -33,7 +33,14 @@ try {
   <div>
     {
       !user ? (
-        <a href="login/github"> Sign in with GitHub</a>
+        <div>
+          <div>
+            <a href="login/github"> Sign in with GitHub</a>
+          </div>
+          <div>
+            <a href="login/google"> Sign in with Google</a>
+          </div>
+        </div>
       ) : (
         <div> Hello {user?.username}</div>
       )
