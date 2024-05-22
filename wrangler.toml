@@ -6,5 +6,5 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "APP_DB" # i.e. available in your Worker on env.APP_DB
 database_name = "fullstack-astro-cloudflare-db"
-database_id = "18e42665-1843-4794-bd64-5fac367f29cd"
+database_id = "7b82d9e3-00ef-4a36-bd75-af4dc97acc98"
 migrations_dir = "./drizzle"
