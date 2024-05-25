@@ -10,8 +10,6 @@ import * as schema from "../../../../db/schema";
 import type { APIContext } from "astro";
 
 export async function GET(context: APIContext): Promise<Response> {
-  console.log("google oauth callback!!!");
-
   const google = initialiseGoogleClient(context.locals.runtime.env);
   const lucia = initialiseLucia(context.locals.runtime.env.APP_DB);
   const db = drizzle(context.locals.runtime.env.APP_DB, { schema });
@@ -51,7 +49,7 @@ export async function GET(context: APIContext): Promise<Response> {
     const googleUser: GoogleUser = await googleUserResponse.json();
 
     const existingUser = await db.query.userTable.findFirst({
-      where: eq(schema.userTable.googleId, parseInt(googleUser.sub)),
+      where: eq(schema.userTable.oauthId, googleUser.sub),
     });
 
     if (existingUser) {
@@ -69,8 +67,9 @@ export async function GET(context: APIContext): Promise<Response> {
 
     await db.insert(schema.userTable).values({
       id: userId,
-      googleId: parseInt(googleUser.sub),
+      oauthId: googleUser.sub,
       username: googleUser.name,
+      authType: "google",
     });
 
     const session = await lucia.createSession(userId, {});

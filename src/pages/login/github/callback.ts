@@ -33,7 +33,7 @@ export async function GET(context: APIContext): Promise<Response> {
     const githubUser: GitHubUser = await githubUserResponse.json();
 
     const existingUser = await db.query.userTable.findFirst({
-      where: eq(schema.userTable.githubId, parseInt(githubUser.id)),
+      where: eq(schema.userTable.oauthId, githubUser.id),
     });
 
     if (existingUser) {
@@ -51,8 +51,9 @@ export async function GET(context: APIContext): Promise<Response> {
 
     await db.insert(schema.userTable).values({
       id: userId,
-      githubId: parseInt(githubUser.id),
+      oauthId: githubUser.id,
       username: githubUser.login,
+      authType: "github",
     });
 
     const session = await lucia.createSession(userId, {});
