@@ -67,7 +67,12 @@ export const bucketAccess = (env: Env) => {
 };
 
 // TODO: think of a better image access patterns
-const R2_DEV_URL = "https://pub-d6b3c5b27ce548038291ba75700dd00d.r2.dev";
 export const makeImageUrl = (imageRef: string) => {
-  return `${R2_DEV_URL}/${imageRef}`;
+  const PUBLIC_BUCKET_URL = import.meta.env.PUBLIC_BUCKET_URL;
+
+  if (!PUBLIC_BUCKET_URL) {
+    throw new Error("You have not configired your public bucket access");
+  }
+
+  return `${PUBLIC_BUCKET_URL}/${imageRef}`;
 };

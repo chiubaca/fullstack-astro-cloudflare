@@ -35,12 +35,12 @@ export const Todo: React.FC<TodoProps> = ({ todos: initialTodos }) => {
         <button type="submit">Add Todo</button>
       </form>
 
-      {todos.map((todo, idx) => (
-        <>
-          <div key={idx}>{todo.text}</div>
+      {todos.map((todo) => (
+        <div key={todo.id}>
+          <div>{todo.text}</div>
 
           {todo.imageRef && <img src={makeImageUrl(todo.imageRef)} />}
-        </>
+        </div>
       ))}
     </>
   );
