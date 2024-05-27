@@ -6,6 +6,8 @@ import {
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
+type Body = PutObjectCommand["input"]["Body"];
+
 export const bucketAccess = (env: Env) => {
   const client = new S3Client({
     region: "auto",
@@ -32,15 +34,21 @@ export const bucketAccess = (env: Env) => {
       console.log("🚀 ~ addObject ~ Body:", Body);
     },
 
-    putObject: async (body: any, key: string) => {
+    putObject: async (args: {
+      key: string;
+      body: Body;
+      contentType: string;
+    }) => {
+      const { key, body, contentType } = args;
+
       const command = new PutObjectCommand({
         Bucket: "fullstack-astro-cloudflare-bucket",
         Key: key,
         Body: body,
-        ContentType: "image/jpeg",
+        ContentType: contentType,
       });
-      const repsonse = await client.send(command);
-      console.log("🚀 ~ addObject ~ Body:", repsonse);
+      const response = await client.send(command);
+      return response;
     },
 
     signedImageUrl: async (key: string) => {
@@ -56,4 +64,10 @@ export const bucketAccess = (env: Env) => {
       );
     },
   };
+};
+
+// TODO: think of a better image access patterns
+const R2_DEV_URL = "https://pub-d6b3c5b27ce548038291ba75700dd00d.r2.dev";
+export const makeImageUrl = (imageRef: string) => {
+  return `${R2_DEV_URL}/${imageRef}`;
 };

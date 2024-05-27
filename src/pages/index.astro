@@ -1,31 +1,21 @@
 ---
 import { drizzle } from "drizzle-orm/d1";
-// import { actions, getActionProps } from "astro:actions";
 
 import { todo } from "../../db/schema";
-import { Todo } from "../components/todo";
-import { FileUpload } from "../components/file-upload";
+import { Todo, type TodoProps } from "../components/todo";
+import { s } from "../../dist/_worker.js/chunks/react-dom_kt96FAND.mjs";
 
-import { bucketAccess } from "../lib/bucket-access";
 const APP_DB = Astro.locals.runtime.env.APP_DB;
-
-const { signedImageUrl } = bucketAccess(Astro.locals.runtime.env);
-
-const url = await signedImageUrl("remote-upload-test");
 
 const { user } = Astro.locals;
 
-let todos: {
-  id: number;
-  text: string;
-}[] = [];
+let todos: TodoProps["todos"] = [];
 
 try {
   const db = drizzle(APP_DB);
-
-  todos = await db.select().from(todo);
+  todos = await db.select().from(todo);s
 } catch (err) {
-  console.log("Uncaught error!", err);
+  console.warn("Internal error getting todos", err);
 }
 ---
 
@@ -56,10 +46,6 @@ try {
   </div>
   <body>
     <Todo client:load todos={todos} />
-
-    <FileUpload client:load />
-
-    <img src={url} alt="image" />
   </body>
 
 

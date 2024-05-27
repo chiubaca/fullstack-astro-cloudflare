@@ -1,15 +1,18 @@
 import { actions, getActionProps } from "astro:actions";
 import { useState } from "react";
+import { makeImageUrl } from "../lib/bucket-access";
 
-type Props = {
+export type TodoProps = {
   todos: {
     id: string | number;
     text: string;
+    createdAt: string;
+    imageRef: string | null;
   }[];
 };
 
-export const Todo: React.FC<Props> = ({todos:initialTodos}) => {
-  const [todos, setTodos] = useState<Props['todos']>(initialTodos);
+export const Todo: React.FC<TodoProps> = ({ todos: initialTodos }) => {
+  const [todos, setTodos] = useState<TodoProps["todos"]>(initialTodos);
 
   return (
     <>
@@ -21,16 +24,23 @@ export const Todo: React.FC<Props> = ({todos:initialTodos}) => {
 
           const resp = await actions.createTodo(formData);
 
-          setTodos([...todos, resp]);
+          if (!resp.data) return;
+
+          setTodos([...todos, resp.data]);
         }}
       >
         <input {...getActionProps(actions.createTodo)} />
         <input name="text" type="text" />
+        <input type="file" id="file-upload" name="imageFile" accept="image/*" />
         <button type="submit">Add Todo</button>
       </form>
 
       {todos.map((todo, idx) => (
-        <div key={idx}>{todo.text}</div>
+        <>
+          <div key={idx}>{todo.text}</div>
+
+          {todo.imageRef && <img src={makeImageUrl(todo.imageRef)} />}
+        </>
       ))}
     </>
   );

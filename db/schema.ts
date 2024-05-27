@@ -7,6 +7,7 @@ export const todo = sqliteTable("todo", {
   createdAt: text("timestamp")
     .notNull()
     .default(sql`(current_timestamp)`),
+  imageRef: text("image_ref").unique(),
 });
 
 export const userTable = sqliteTable("user", {
