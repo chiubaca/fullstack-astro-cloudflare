@@ -4,7 +4,11 @@ compatibility_date = "2024-05-12"
 pages_build_output_dir = "dist"
 
 [[d1_databases]]
-binding = "APP_DB" # i.e. available in your Worker on env.APP_DB
+binding = "APP_DB"                                   # i.e. available in your Worker on env.APP_DB
 database_name = "fullstack-astro-cloudflare-db"
 database_id = "307c117f-ab77-485c-a26e-deb8586cbd3b"
 migrations_dir = "./drizzle"
+
+[[r2_buckets]]
+binding = 'APP_BUCKET'
+bucket_name = 'fullstack-astro-cloudflare-bucket'
