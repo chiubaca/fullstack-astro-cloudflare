@@ -1,6 +1,6 @@
 // pages/login/github/callback.ts
 import { generateIdFromEntropySize } from "lucia";
-import { Google, OAuth2RequestError } from "arctic";
+import { OAuth2RequestError } from "arctic";
 import { drizzle } from "drizzle-orm/d1";
 import { eq } from "drizzle-orm";
 

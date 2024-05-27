@@ -3,7 +3,6 @@ import { drizzle } from "drizzle-orm/d1";
 
 import { todo } from "../../db/schema";
 import { Todo, type TodoProps } from "../components/todo";
-import { s } from "../../dist/_worker.js/chunks/react-dom_kt96FAND.mjs";
 
 const APP_DB = Astro.locals.runtime.env.APP_DB;
 
@@ -13,7 +12,7 @@ let todos: TodoProps["todos"] = [];
 
 try {
   const db = drizzle(APP_DB);
-  todos = await db.select().from(todo);s
+  todos = await db.select().from(todo);
 } catch (err) {
   console.warn("Internal error getting todos", err);
 }
