@@ -71,7 +71,7 @@ export const makeImageUrl = (imageRef: string) => {
   const PUBLIC_BUCKET_URL = import.meta.env.PUBLIC_BUCKET_URL;
 
   if (!PUBLIC_BUCKET_URL) {
-    throw new Error("You have not configired your public bucket access");
+    throw new Error("You have not configured your public bucket access");
   }
 
   return `${PUBLIC_BUCKET_URL}/${imageRef}`;

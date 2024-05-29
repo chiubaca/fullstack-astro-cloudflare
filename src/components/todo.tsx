@@ -2,6 +2,8 @@ import { actions, getActionProps } from "astro:actions";
 import { useState } from "react";
 import { makeImageUrl } from "../lib/bucket-access";
 
+import { Image } from "@unpic/react";
+
 export type TodoProps = {
   todos: {
     id: string | number;
@@ -39,7 +41,13 @@ export const Todo: React.FC<TodoProps> = ({ todos: initialTodos }) => {
         <div key={todo.id}>
           <div>{todo.text}</div>
 
-          {todo.imageRef && <img src={makeImageUrl(todo.imageRef)} />}
+          {todo.imageRef && (
+            <Image
+              src={makeImageUrl(todo.imageRef)}
+              width={400}
+              height={400}
+            />
+          )}
         </div>
       ))}
     </>
