@@ -8,8 +8,11 @@ CREATE TABLE `session` (
 --> statement-breakpoint
 CREATE TABLE `todo` (
 	`id` integer PRIMARY KEY NOT NULL,
+	`user_id` text NOT NULL,
 	`text` text NOT NULL,
-	`timestamp` text DEFAULT (current_timestamp) NOT NULL
+	`timestamp` text DEFAULT (current_timestamp) NOT NULL,
+	`image_ref` text,
+	FOREIGN KEY (`user_id`) REFERENCES `user`(`id`) ON UPDATE no action ON DELETE no action
 );
 --> statement-breakpoint
 CREATE TABLE `user` (
@@ -20,4 +23,5 @@ CREATE TABLE `user` (
 	`timestamp` text DEFAULT (current_timestamp) NOT NULL
 );
 --> statement-breakpoint
+CREATE UNIQUE INDEX `todo_image_ref_unique` ON `todo` (`image_ref`);--> statement-breakpoint
 CREATE UNIQUE INDEX `user_oauth_id_unique` ON `user` (`oauth_id`);
