@@ -52,8 +52,6 @@ export const bucketAccess = (env: Env) => {
     },
 
     signedImageUrl: async (key: string) => {
-      console.log("🚀 ~ signedImageUrl ~ signedImageUrl:", key);
-
       return await getSignedUrl(
         client,
         new GetObjectCommand({

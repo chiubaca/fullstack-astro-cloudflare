@@ -41,7 +41,6 @@ export async function GET(context: APIContext): Promise<Response> {
     });
     const unValidatedGithubUser = await githubUserResponse.json();
     const githubUser = githubUserSchema.parse(unValidatedGithubUser);
-    console.log("🚀 ~ GET ~ githubUser:", githubUser);
 
     const existingUser = await db.query.userTable.findFirst({
       where: eq(schema.userTable.oauthId, String(githubUser.id)),

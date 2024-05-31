@@ -56,7 +56,6 @@ export async function GET(context: APIContext): Promise<Response> {
 
     const unValidatedGoogleUser = await googleUserResponse.json();
     const googleUser = googleUserSchema.parse(unValidatedGoogleUser);
-    console.log("🚀 ~ GET ~ googleUser:", googleUser);
 
     const existingUser = await db.query.userTable.findFirst({
       where: eq(schema.userTable.oauthId, googleUser.sub),
