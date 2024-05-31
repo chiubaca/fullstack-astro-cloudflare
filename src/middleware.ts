@@ -44,6 +44,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
     );
   }
   context.locals.session = session;
-  context.locals.user = user;
+  context.locals.user = user as OAuthUser;
   return next();
 });
