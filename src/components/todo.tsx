@@ -5,21 +5,20 @@ import { actions, getActionProps } from "astro:actions";
 
 import { makeImageUrl } from "../lib/bucket-access";
 
+import type { Todo } from "../types";
 
 export type TodoProps = {
-  todos: {
-    id: string | number;
-    text: string;
-    createdAt: string;
-    imageRef: string | null;
-  }[];
+  todos: Todo[];
 };
 
-export const Todo: React.FC<TodoProps> = ({ todos: initialTodos }) => {
+export const Todos: React.FC<TodoProps> = ({ todos: initialTodos }) => {
   const [todos, setTodos] = useState<TodoProps["todos"]>(initialTodos);
+  const [error, setError] = useState<string>("");
 
   return (
     <>
+      {error && <>{error}</>}
+
       <form
         method="POST"
         onSubmit={async (e) => {
@@ -28,7 +27,10 @@ export const Todo: React.FC<TodoProps> = ({ todos: initialTodos }) => {
 
           const resp = await actions.createTodo(formData);
 
-          if (!resp.data) return;
+          if (resp.type === "error") {
+            setError(resp.message);
+            return;
+          }
 
           setTodos([...todos, resp.data]);
         }}
@@ -44,11 +46,7 @@ export const Todo: React.FC<TodoProps> = ({ todos: initialTodos }) => {
           <div>{todo.text}</div>
 
           {todo.imageRef && (
-            <Image
-              src={makeImageUrl(todo.imageRef)}
-              width={400}
-              height={400}
-            />
+            <Image src={makeImageUrl(todo.imageRef)} width={400} height={400} />
           )}
         </div>
       ))}

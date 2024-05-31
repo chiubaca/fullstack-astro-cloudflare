@@ -2,7 +2,7 @@
 import { drizzle } from "drizzle-orm/d1";
 
 import { todo } from "../../db/schema";
-import { Todo, type TodoProps } from "../components/todo";
+import { Todos, type TodoProps } from "../components/todo";
 
 const APP_DB = Astro.locals.runtime.env.APP_DB;
 
@@ -49,7 +49,13 @@ try {
     }
   </div>
   <body>
-    <Todo client:load todos={todos} />
+    {
+      user ? (
+        <Todos client:load todos={todos} />
+      ) : (
+        <div>Sign in to post a message</div>
+      )
+    }
   </body>
 
 
