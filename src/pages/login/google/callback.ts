@@ -1,13 +1,22 @@
-// pages/login/github/callback.ts
-import { generateIdFromEntropySize } from "lucia";
-import { OAuth2RequestError } from "arctic";
-import { drizzle } from "drizzle-orm/d1";
+import { z } from "astro/zod";
 import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/d1";
+import { OAuth2RequestError } from "arctic";
+import { generateIdFromEntropySize } from "lucia";
 
-import { initialiseGoogleClient, initialiseLucia } from "../../../lib/lucia";
 import * as schema from "../../../../db/schema";
+import { initialiseGoogleClient, initialiseLucia } from "../../../lib/lucia";
 
 import type { APIContext } from "astro";
+
+const googleUserSchema = z.object({
+  sub: z.string(), //123asd
+  name: z.string(), //'Alex Chiu',
+  given_name: z.string(), //'Alex',
+  family_name: z.string(), //'Chiu',
+  picture: z.string(), //'https://lh3.googleusercontent.com/abc',
+  email: z.string().email(), //'alexchiu11@gmail.com',
+});
 
 export async function GET(context: APIContext): Promise<Response> {
   const google = initialiseGoogleClient(context.locals.runtime.env);
@@ -45,8 +54,9 @@ export async function GET(context: APIContext): Promise<Response> {
       }
     );
 
-    // TODO: Zod schema validation required here
-    const googleUser: GoogleUser = await googleUserResponse.json();
+    const unValidatedGoogleUser = await googleUserResponse.json();
+    const googleUser = googleUserSchema.parse(unValidatedGoogleUser);
+    console.log("🚀 ~ GET ~ googleUser:", googleUser);
 
     const existingUser = await db.query.userTable.findFirst({
       where: eq(schema.userTable.oauthId, googleUser.sub),
@@ -68,8 +78,11 @@ export async function GET(context: APIContext): Promise<Response> {
     await db.insert(schema.userTable).values({
       id: userId,
       oauthId: googleUser.sub,
-      username: googleUser.name,
       authType: "google",
+      avatarUrl: googleUser.picture,
+      userName: googleUser.given_name,
+      fullName: googleUser.name,
+      email: googleUser.email,
     });
 
     const session = await lucia.createSession(userId, {});
@@ -92,10 +105,4 @@ export async function GET(context: APIContext): Promise<Response> {
       status: 500,
     });
   }
-}
-
-interface GoogleUser {
-  sub: string;
-  name: string;
-  avatar: string;
 }

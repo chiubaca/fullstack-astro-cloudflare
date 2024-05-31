@@ -14,6 +14,12 @@ export const server = {
     }),
     handler: async (input, context) => {
       const { locals } = context;
+      const user = locals.user;
+
+      if (!user) {
+        throw new Error("You need be logged in");
+      }
+
       const APP_DB = locals.runtime.env.APP_DB;
 
       let imageRef: string | undefined;
@@ -38,7 +44,7 @@ export const server = {
       const db = drizzle(APP_DB);
       const resp = await db
         .insert(todo)
-        .values({ text: input.text, imageRef })
+        .values({ userId: user.id, text: input.text, imageRef })
         .returning();
 
       return { data: resp[0] };

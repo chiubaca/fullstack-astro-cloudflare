@@ -9,15 +9,16 @@ declare namespace App {
 
 type User = import("lucia").User;
 
-interface GitHubUser extends User {
-  github_id?: string;
-  username?: string;
+interface OAuthUser extends User {
+  oauthId: string;
+  username: string;
+  avatarUrl: string;
 }
 
 /// <reference types="astro/client" />
 declare namespace App {
   interface Locals {
     session: import("lucia").Session | null;
-    user: GitHubUser | null;
+    user: OAuthUser | null;
   }
 }

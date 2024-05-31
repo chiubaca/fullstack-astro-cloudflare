@@ -17,7 +17,10 @@ export const userTable = sqliteTable("user", {
   id: text("id").notNull().primaryKey(),
   oauthId: text("oauth_id", { length: 255 }).unique().notNull(),
   authType: text("oauth_type", { enum: ["google", "github"] }).notNull(),
-  username: text("username").notNull(),
+  avatarUrl: text("avatar_url"),
+  userName: text("user_name").notNull(), // The user alias or handle name
+  fullName: text("full_name").notNull(), // Full name of the user
+  email: text("email").notNull(),
   createdAt: text("timestamp")
     .notNull()
     .default(sql`(current_timestamp)`),

@@ -1,13 +1,21 @@
-// pages/login/github/callback.ts
-import { generateIdFromEntropySize } from "lucia";
-import { OAuth2RequestError } from "arctic";
-import { drizzle } from "drizzle-orm/d1";
+import { z } from "astro/zod";
 import { eq } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/d1";
+import { OAuth2RequestError } from "arctic";
+import { generateIdFromEntropySize } from "lucia";
 
-import { initialiseGithubClient, initialiseLucia } from "../../../lib/lucia";
 import * as schema from "../../../../db/schema";
+import { initialiseGithubClient, initialiseLucia } from "../../../lib/lucia";
 
 import type { APIContext } from "astro";
+
+const githubUserSchema = z.object({
+  id: z.number(), //110905198
+  login: z.string(), //'chiubaca'
+  name: z.string(), //'Alex Chiu'
+  avatar_url: z.string(), //'https://avatars.githubusercontent.com/u/18376481?v=4'
+  email: z.string().email(), //'alexchiu11@gmail.com',
+});
 
 export async function GET(context: APIContext): Promise<Response> {
   const github = initialiseGithubClient(context.locals.runtime.env);
@@ -16,6 +24,7 @@ export async function GET(context: APIContext): Promise<Response> {
   const code = context.url.searchParams.get("code");
   const state = context.url.searchParams.get("state");
   const storedState = context.cookies.get("github_oauth_state")?.value ?? null;
+
   if (!code || !state || !storedState || state !== storedState) {
     return new Response(null, {
       status: 400,
@@ -30,10 +39,12 @@ export async function GET(context: APIContext): Promise<Response> {
         "User-Agent": "astro-cloudflare-pages",
       },
     });
-    const githubUser: GitHubUser = await githubUserResponse.json();
+    const unValidatedGithubUser = await githubUserResponse.json();
+    const githubUser = githubUserSchema.parse(unValidatedGithubUser);
+    console.log("🚀 ~ GET ~ githubUser:", githubUser);
 
     const existingUser = await db.query.userTable.findFirst({
-      where: eq(schema.userTable.oauthId, githubUser.id),
+      where: eq(schema.userTable.oauthId, String(githubUser.id)),
     });
 
     if (existingUser) {
@@ -51,9 +62,12 @@ export async function GET(context: APIContext): Promise<Response> {
 
     await db.insert(schema.userTable).values({
       id: userId,
-      oauthId: githubUser.id,
-      username: githubUser.login,
+      oauthId: String(githubUser.id),
       authType: "github",
+      avatarUrl: githubUser.avatar_url,
+      userName: githubUser.login,
+      fullName: githubUser.name,
+      email: githubUser.email,
     });
 
     const session = await lucia.createSession(userId, {});
@@ -76,9 +90,4 @@ export async function GET(context: APIContext): Promise<Response> {
       status: 500,
     });
   }
-}
-
-interface GitHubUser {
-  id: string;
-  login: string;
 }

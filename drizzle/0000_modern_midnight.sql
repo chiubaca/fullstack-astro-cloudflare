@@ -19,7 +19,10 @@ CREATE TABLE `user` (
 	`id` text PRIMARY KEY NOT NULL,
 	`oauth_id` text(255) NOT NULL,
 	`oauth_type` text NOT NULL,
-	`username` text NOT NULL,
+	`avatar_url` text,
+	`user_name` text NOT NULL,
+	`full_name` text NOT NULL,
+	`email` text NOT NULL,
 	`timestamp` text DEFAULT (current_timestamp) NOT NULL
 );
 --> statement-breakpoint

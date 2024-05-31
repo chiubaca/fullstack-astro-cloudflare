@@ -39,7 +39,12 @@ try {
           </div>
         </div>
       ) : (
-        <div> Hello {user?.username}</div>
+        <>
+          <div> Hello {user.userName} </div>
+          <form method="post" action="/logout">
+            <button>Sign out</button>
+          </form>
+        </>
       )
     }
   </div>

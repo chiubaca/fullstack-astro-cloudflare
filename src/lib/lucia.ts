@@ -27,17 +27,23 @@ export function initialiseLucia(D1: D1Database) {
       },
     },
     getUserAttributes: (attributes) => {
+      const { avatarUrl, email, fullName, userName } = attributes;
+
       return {
-        githubId: attributes.githubId,
-        username: attributes.username,
+        avatarUrl,
+        userName,
+        fullName,
+        email,
       };
     },
   });
 }
 
 interface DatabaseUserAttributes {
-  githubId: number;
-  username: string;
+  avatarUrl: string;
+  userName: string;
+  fullName: string;
+  email: string;
 }
 
 declare module "lucia" {
