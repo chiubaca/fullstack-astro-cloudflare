@@ -2,19 +2,13 @@ import { nanoid } from "nanoid";
 import { drizzle } from "drizzle-orm/d1";
 import { defineAction, z } from "astro:actions";
 
-import { todo } from "../../db/schema";
+import { message } from "../../db/schema";
 import { bucketAccess } from "../lib/bucket-access";
 
-export type Todo = {
-  text: string;
-  id: number;
-  userId: string;
-  createdAt: string;
-  imageRef: string | null;
-};
+import type { Message } from "../types";
 
 export const server = {
-  createTodo: defineAction({
+  createMessage: defineAction({
     accept: "form",
     input: z.object({
       text: z.string(),
@@ -24,7 +18,7 @@ export const server = {
       input,
       context
     ): Promise<
-      { type: "error"; message: string } | { type: "success"; data: Todo }
+      { type: "error"; message: string } | { type: "success"; data: Message }
     > => {
       const { locals } = context;
       const user = locals.user;
@@ -57,7 +51,7 @@ export const server = {
 
       const db = drizzle(APP_DB);
       const resp = await db
-        .insert(todo)
+        .insert(message)
         .values({ userId: user.id, text: input.text, imageRef })
         .returning();
 

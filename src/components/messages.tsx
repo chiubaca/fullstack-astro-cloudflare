@@ -5,14 +5,17 @@ import { actions, getActionProps } from "astro:actions";
 
 import { makeImageUrl } from "../lib/bucket-access";
 
-import type { Todo } from "../types";
+import type { Message } from "../types";
 
-export type TodoProps = {
-  todos: Todo[];
+export type MessagesProps = {
+  messages: Message[];
 };
 
-export const Todos: React.FC<TodoProps> = ({ todos: initialTodos }) => {
-  const [todos, setTodos] = useState<TodoProps["todos"]>(initialTodos);
+export const Messages: React.FC<MessagesProps> = ({
+  messages: initialMessages,
+}) => {
+  const [messages, setMessages] =
+    useState<MessagesProps["messages"]>(initialMessages);
   const [error, setError] = useState<string>("");
 
   return (
@@ -25,28 +28,32 @@ export const Todos: React.FC<TodoProps> = ({ todos: initialTodos }) => {
           e.preventDefault();
           const formData = new FormData(e.target as HTMLFormElement);
 
-          const resp = await actions.createTodo(formData);
+          const resp = await actions.createMessage(formData);
 
           if (resp.type === "error") {
             setError(resp.message);
             return;
           }
 
-          setTodos([...todos, resp.data]);
+          setMessages([...messages, resp.data]);
         }}
       >
-        <input {...getActionProps(actions.createTodo)} />
+        <input {...getActionProps(actions.createMessage)} />
         <input name="text" type="text" />
         <input type="file" id="file-upload" name="imageFile" accept="image/*" />
-        <button type="submit">Add Todo</button>
+        <button type="submit">Add Message</button>
       </form>
 
-      {todos.map((todo) => (
-        <div key={todo.id}>
-          <div>{todo.text}</div>
+      {messages.map((message) => (
+        <div key={message.id}>
+          <div>{message.text}</div>
 
-          {todo.imageRef && (
-            <Image src={makeImageUrl(todo.imageRef)} width={400} height={400} />
+          {message.imageRef && (
+            <Image
+              src={makeImageUrl(message.imageRef)}
+              width={400}
+              height={400}
+            />
           )}
         </div>
       ))}

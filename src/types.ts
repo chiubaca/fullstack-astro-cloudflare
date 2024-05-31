@@ -1,4 +1,4 @@
-export type Todo = {
+export type Message = {
   text: string;
   id: number;
   userId: string;

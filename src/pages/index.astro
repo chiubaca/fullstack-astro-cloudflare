@@ -1,20 +1,20 @@
 ---
 import { drizzle } from "drizzle-orm/d1";
 
-import { todo } from "../../db/schema";
-import { Todos, type TodoProps } from "../components/todo";
+import { message } from "../../db/schema";
+import { Messages, type MessagesProps } from "../components/messages";
 
 const APP_DB = Astro.locals.runtime.env.APP_DB;
 
 const { user } = Astro.locals;
 
-let todos: TodoProps["todos"] = [];
+let messages: MessagesProps["messages"] = [];
 
 try {
   const db = drizzle(APP_DB);
-  todos = await db.select().from(todo);
+  messages = await db.select().from(message);
 } catch (err) {
-  console.warn("Internal error getting todos", err);
+  console.warn("Internal error accessing messages", err);
 }
 ---
 
@@ -24,7 +24,7 @@ try {
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>Astro</title>
+    <title>Fullstack Cloudflare with Astro.js</title>
   </head>
 
   <div>
@@ -51,7 +51,7 @@ try {
   <body>
     {
       user ? (
-        <Todos client:load todos={todos} />
+        <Messages client:load messages={messages} />
       ) : (
         <div>Sign in to post a message</div>
       )
