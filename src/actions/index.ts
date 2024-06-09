@@ -6,7 +6,7 @@ import { message } from "../../db/schema";
 import { bucketAccess } from "../lib/bucket-access";
 
 import type { Message } from "../types";
-import { allowedMimeTypes } from "../lib/allowedContent";
+import { allowedMimeTypes } from "../lib/allowed-content-types";
 
 export const server = {
   createMessage: defineAction({

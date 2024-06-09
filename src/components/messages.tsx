@@ -4,8 +4,8 @@ import { Image } from "@unpic/react";
 import { actions, getActionProps } from "astro:actions";
 
 import type { Message } from "../types";
-import { makeImageUrl } from "../lib/makeImageUrl";
-import { allowedMimeTypes, getMimeTypesAsExtensions } from "../lib/allowedContent";
+import { makeImageUrl } from "../lib/make-image-url";
+import { allowedMimeTypes, getMimeTypesAsExtensions } from "../lib/allowed-content-types";
 
 export type MessagesProps = {
   messages: Message[];
