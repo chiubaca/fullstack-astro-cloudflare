@@ -5,6 +5,7 @@ import { actions, getActionProps } from "astro:actions";
 
 import type { Message } from "../types";
 import { makeImageUrl } from "../lib/makeImageUrl";
+import { allowedMimeTypes, getMimeTypesAsExtensions } from "../lib/allowedContent";
 
 export type MessagesProps = {
   messages: Message[];
@@ -39,7 +40,12 @@ export const Messages: React.FC<MessagesProps> = ({
       >
         <input {...getActionProps(actions.createMessage)} />
         <input name="text" type="text" />
-        <input type="file" id="file-upload" name="imageFile" accept="image/*" />
+        <input
+          type="file"
+          id="file-upload"
+          name="imageFile"
+          accept={getMimeTypesAsExtensions(allowedMimeTypes)}
+        />
         <button type="submit">Add Message</button>
       </form>
 

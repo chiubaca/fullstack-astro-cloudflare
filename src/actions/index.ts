@@ -6,6 +6,7 @@ import { message } from "../../db/schema";
 import { bucketAccess } from "../lib/bucket-access";
 
 import type { Message } from "../types";
+import { allowedMimeTypes } from "../lib/allowedContent";
 
 export const server = {
   createMessage: defineAction({
@@ -31,12 +32,16 @@ export const server = {
 
       let imageRef: string | undefined;
 
-      if (input.imageFile && input.imageFile.type.startsWith("image")) {
+      if (input.imageFile && !allowedMimeTypes.includes(input.imageFile.type)) {
+        return { type: "error", message: "Cant submit this type of file" };
+      }
+
+      if (input.imageFile) {
         const { putObject } = bucketAccess(context.locals.runtime.env);
 
         try {
           const fileBuffer = await input.imageFile.arrayBuffer();
-          imageRef = nanoid(10) + "_" + input.imageFile.name;
+          imageRef = nanoid(10);
 
           await putObject({
             key: imageRef,
