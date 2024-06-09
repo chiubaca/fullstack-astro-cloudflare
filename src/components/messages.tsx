@@ -3,9 +3,8 @@ import { Image } from "@unpic/react";
 
 import { actions, getActionProps } from "astro:actions";
 
-import { makeImageUrl } from "../lib/bucket-access";
-
 import type { Message } from "../types";
+import { makeImageUrl } from "../lib/makeImageUrl";
 
 export type MessagesProps = {
   messages: Message[];
@@ -50,7 +49,7 @@ export const Messages: React.FC<MessagesProps> = ({
 
           {message.imageRef && (
             <Image
-              src={makeImageUrl(message.imageRef)}
+              src={makeImageUrl(message.imageRef, "q=50,f=auto")}
               width={400}
               height={400}
             />
